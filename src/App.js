@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Book from './Book.js';
 
 class BooksApp extends React.Component {
     state = {
@@ -6,8 +7,13 @@ class BooksApp extends React.Component {
     }
 
     render() {
+
         return(
-        <div>Hello</div>
+            <div>
+                <Book title={"1984"}/>
+                <Book title={"Slaughterhouse 5"}/>
+                <Book title={"The Dragon Reborn"}/>
+            </div>
         )
     }
 }
