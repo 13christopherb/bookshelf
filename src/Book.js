@@ -2,13 +2,14 @@ import React, { Component } from 'react';
 
 class Book extends React.Component {
     state = {
-        status: "reading"
     }
 
     render() {
         return(
             <div>
                 {this.props.title}
+                {this.props.authors}
+                <img src={this.props.thumbnail}/>
             </div>
         )
     }
