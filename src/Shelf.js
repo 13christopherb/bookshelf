@@ -7,8 +7,10 @@ class Shelf extends React.Component {
 
     render() {
         return(
-            <div>
-                {this.state.books}
+            <div className="row bookshelf flex-box flex-nowrap">
+                    { this.state.books }
+                    { this.state.books }
+                    { this.state.books }
             </div>
         )
     }

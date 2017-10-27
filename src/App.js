@@ -1,6 +1,7 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import Book from './Book.js';
 import Shelf from './Shelf.js';
+import './app.css';
 import * as BooksAPI from './BooksAPI'
 import _ from 'underscore'
 
@@ -11,11 +12,12 @@ class BooksApp extends React.Component {
 
     componentDidMount() {
         BooksAPI.getAll().then((bks) => {
-            var books= bks.map((bk) => {
-                return <Book key={bk.id} title={bk.title} authors={bk.authors} thumbnail={bk.imageLinks.thumbnail}
+            var books = bks.map((bk) => {
+                console.log(bk);
+                return <Book key={bk.id} title={bk.title} authors={bk.authors} thumbnail={bk.imageLinks.smallThumbnail}
                              shelf={bk.shelf}/>
             });
-            var booksSet = _.groupBy(books, function(bk) {
+            var booksSet = _.groupBy(books, (bk) => {
                 return bk.props.shelf;
             });
 
@@ -30,14 +32,13 @@ class BooksApp extends React.Component {
     }
 
     render() {
-        return(
-            <div>
+        return (
+            <div className="container-fluid">
                 {this.state.shelves}
             </div>
         )
     }
 }
-
 
 
 export default BooksApp;
