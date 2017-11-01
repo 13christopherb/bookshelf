@@ -21,7 +21,8 @@ class BooksApp extends React.Component {
         });
         books.push(<Book key={book.props.id} title={book.props.title} authors={book.props.authors}
                          thumbnail={book.props.thumbnail}
-                         shelf={shelf} changeShelf={this.changeShelf}/>)
+                         shelf={shelf} changeShelf={this.changeShelf}/>);
+        BooksAPI.update({id: book.props.id}, shelf);
         this.setState({books: books});
     }
 
@@ -31,7 +32,7 @@ class BooksApp extends React.Component {
     componentDidMount() {
         BooksAPI.getAll().then((bks) => {
             var books = bks.map((bk) => {
-                return <Book key={bk.id} title={bk.title} authors={bk.authors} thumbnail={bk.imageLinks.smallThumbnail}
+                return <Book key={bk.id} id={bk.id} title={bk.title} authors={bk.authors} thumbnail={bk.imageLinks.smallThumbnail}
                              shelf={bk.shelf} changeShelf={this.changeShelf}/>
             });
 

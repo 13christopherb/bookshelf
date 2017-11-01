@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import "font-awesome/css/font-awesome.min.css";
 import _ from "underscore"
 
 class Book extends React.Component {
@@ -9,17 +10,20 @@ class Book extends React.Component {
     /**
      * Tells the App component to move this book to a different shelf
      */
-    changeShelf = () => {
-        this.props.changeShelf(this, "read");
+    changeShelf = (e) => {
+        this.props.changeShelf(this, e.target.value);
     }
 
     render() {
         return(
             <div className="col-md-4">
-                <button onClick={this.changeShelf}>
-                    Change shelf
-                </button>
-
+                <div className="book-shelf-changer">
+                    <select value={this.state.shelf} onChange={this.changeShelf}>
+                        <option value="currentlyReading">Currently Reading</option>
+                        <option value="wantToRead">Want to Read</option>
+                        <option value="read">Read</option>
+                    </select>
+                </div>
                 <div className="card border-primary">
                     <img className="card-img-top" src={ this.props.thumbnail } alt="Card image cap" />
                     <div className="card-body">
