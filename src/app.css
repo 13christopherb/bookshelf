@@ -1,7 +1,7 @@
 img.cover {
-    width: 150px;
-    height: auto;
-}
+     width: 150px;
+     height: auto;
+ }
 
 .bookshelf {
     overflow-y: scroll;

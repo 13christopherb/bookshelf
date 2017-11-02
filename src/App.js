@@ -6,7 +6,8 @@ import _ from "underscore"
 
 class BooksApp extends React.Component {
     state = {
-        books: []
+        books: [],
+        searchResults: []
     }
 
     /**
@@ -16,7 +17,6 @@ class BooksApp extends React.Component {
      */
     changeShelf = (book, shelf) => {
         var books = _.reject(this.state.books, (bk) => {
-            console.log("" + bk.props.title + ": " + book.props.title);
             return bk.props.title === book.props.title
         });
         books.push(<Book key={book.props.id} title={book.props.title} authors={book.props.authors}
@@ -24,6 +24,37 @@ class BooksApp extends React.Component {
                          shelf={shelf} changeShelf={this.changeShelf}/>);
         BooksAPI.update({id: book.props.id}, shelf);
         this.setState({books: books});
+    }
+
+    /**
+     * Searches for books matching the search parameter using BooksAPI
+     * @param e The change event for the search field
+     */
+    search= (e) => {
+        if (e.target.value) {
+            BooksAPI.search(e.target.value, 10).then((bks) => {
+                var books = [];
+                if (bks.length > 0) {
+                    books = bks.map((bk) => {
+                        try {
+                            return <Book key={bk.id} id={bk.id} title={bk.title} authors={bk.authors}
+                                         thumbnail={bk.imageLinks.smallThumbnail}
+                                         shelf={bk.shelf}/>
+                        }
+                        catch(err) {
+                        }
+                    });
+                }
+                this.setState({
+                    searchResults: books
+                });
+            })
+        }
+        else {
+            this.setState({
+                books: []
+            })
+        }
     }
 
     /**
@@ -46,9 +77,25 @@ class BooksApp extends React.Component {
         var booksSet = _.groupBy(this.state.books, (bk) => {
             return bk.props.shelf;
         });
-        console.log('test');
+
+        if (this.state.searchResults.length > 0) {
+            var firstShelf = this.state.searchResults.slice(0, 4);
+            var secondShelf = this.state.searchResults.slice(5, 9);
+        }
+
         return (
             <div className="container-fluid">
+                <input tyoe="search" className="form-control" onChange={this.search}></input>
+                <div className="row">
+                    <div className="col-md-10">
+                        <div className="row card-deck flex-row flex-nowrap">
+                            {firstShelf}
+                        </div>
+                        <div className="row card-deck flex-row flex-nowrap">
+                            {secondShelf}
+                        </div>
+                    </div>
+                </div>
                 <div className="row">
                     <div className="col-md-2">
                     </div>

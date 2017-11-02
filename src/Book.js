@@ -28,7 +28,9 @@ class Book extends React.Component {
                     <img className="card-img-top" src={ this.props.thumbnail } alt="Card image cap" />
                     <div className="card-body">
                         <p className="card-title">{ this.props.title }</p>
-                        <p className="small card-text">{ this.props.authors.join(' | ') }</p>
+                        {this.props.authors &&
+                            <p className="small card-text">{this.props.authors.join(' | ')}</p>
+                        }
                     </div>
                 </div>
             </div>
