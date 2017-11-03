@@ -1,4 +1,5 @@
 import React, {Component} from "react";
+import { Link, Route } from 'react-router-dom';
 import Book from "./Book.js";
 import Shelves from "./Shelves.js";
 import SearchResults from "./SearchResults.js";
@@ -29,29 +30,26 @@ class BooksApp extends React.Component {
         this.setState({books: books});
     }
 
-    showSearch= () => {
+    showSearch = () => {
         this.setState({
             showSearchResults: true
         })
     }
 
-    render() {
+    hideSearch = () => {
+        this.setState({
+            showSearchResults: false
+        })
+    }
 
-        if (this.state.showSearchResults) {
+    render() {
             return (
                 <div className="container-fluid">
-                    <SearchResults searchField={this.state.searchField} />
-                </div>
-            )
-        } else {
-            return (
-                <div className="container-fluid">
-                    <button onClick={this.showSearch}>Search</button>
-                    <Shelves/>
+                    <Route exact path="/" component={Shelves}/>
+                    <Route exact path="/search" component={SearchResults}/>
                 </div>
             )
         }
-    }
 }
 
 

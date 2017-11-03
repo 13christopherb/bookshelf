@@ -1,4 +1,5 @@
 import React, {Component} from "react";
+import { Link } from 'react-router-dom';
 import Book from "./Book.js";
 import BookDisplay from "./BookDisplay.js"
 import "./app.css";
@@ -11,12 +12,13 @@ class BooksApp extends BookDisplay {
     }
 
     /**
-     * Searches for books matching the search parameter using BooksAPI and saves
+     * Searches for books matching the search parameter using BooksAPI
      */
     componentDidMount() {
         BooksAPI.getAll().then((bks) => {
             var books = bks.map((bk) => {
-                return <Book key={bk.id} id={bk.id} title={bk.title} authors={bk.authors} thumbnail={bk.imageLinks.smallThumbnail}
+                return <Book key={bk.id} id={bk.id} title={bk.title} authors={bk.authors}
+                             thumbnail={bk.imageLinks.smallThumbnail}
                              shelf={bk.shelf} changeShelf={this.changeShelf}/>
             });
 
@@ -35,14 +37,21 @@ class BooksApp extends BookDisplay {
             <div className="container-fluid">
                 <div className="row">
                     <div className="col-md-2">
+                        <Link
+                            to="/search"
+                            className="btn"
+                        >Search</Link>
                     </div>
                     <div className="col-md-10">
+                        <h4>Currently reading</h4>
                         <div className="row card-deck flex-row flex-nowrap">
                             {booksSet['currentlyReading']}
                         </div>
+                        <h4>Want to read</h4>
                         <div className="row card-deck flex-row flex-nowrap">
                             {booksSet['wantToRead']}
                         </div>
+                        <h4>Read</h4>
                         <div className="row card-deck flex-row flex-nowrap">
                             {booksSet['read']}
                         </div>

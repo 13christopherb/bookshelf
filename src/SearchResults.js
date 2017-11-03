@@ -1,14 +1,14 @@
 import React, {Component} from "react";
+import { Link } from 'react-router-dom';
 import Book from "./Book.js";
 import BookDisplay from "./BookDisplay.js"
 import * as BooksAPI from "./BooksAPI"
-import _ from "underscore"
 
 class SearchResults extends BookDisplay {
     state = {
         books: [],
         searchResults: [],
-        searchField: this.props.searchField
+        searchQuery: ""
     }
 
     /**
@@ -50,6 +50,10 @@ class SearchResults extends BookDisplay {
 
         return (
             <div className="container-fluid">
+                <Link
+                    to="/"
+                    className="btn"
+                >Close</Link>
                 <input tyoe="search" className="form-control" onChange={this.search}></input>
                 <div className="row">
                     <div className="col-md-10">
