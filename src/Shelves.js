@@ -11,7 +11,7 @@ class BooksApp extends BookDisplay {
     }
 
     /**
-     * Searches for books matching the search parameter using BooksAPI
+     * Searches for books matching the search parameter using BooksAPI and saves
      */
     componentDidMount() {
         BooksAPI.getAll().then((bks) => {

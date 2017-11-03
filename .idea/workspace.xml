@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="735437c0-4de7-4d50-a0e0-432ef55160fe" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/App.js" afterPath="$PROJECT_DIR$/src/App.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Shelves.js" afterPath="$PROJECT_DIR$/src/Shelves.js" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -43,8 +43,8 @@
       <file leaf-file-name="Shelves.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Shelves.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="285">
-              <caret line="19" column="76" lean-forward="false" selection-start-line="19" selection-start-column="46" selection-end-line="19" selection-end-column="76" />
+            <state relative-caret-position="195">
+              <caret line="13" column="80" lean-forward="false" selection-start-line="13" selection-start-column="80" selection-end-line="13" selection-end-column="80" />
               <folding>
                 <element signature="e#0#39#0" expanded="true" />
               </folding>
@@ -159,9 +159,9 @@
         <option value="$PROJECT_DIR$/src/Book.js" />
         <option value="$PROJECT_DIR$/src/Search.js" />
         <option value="$PROJECT_DIR$/src/BookDisplay.js" />
-        <option value="$PROJECT_DIR$/src/Shelves.js" />
         <option value="$PROJECT_DIR$/src/App.js" />
         <option value="$PROJECT_DIR$/src/SearchResults.js" />
+        <option value="$PROJECT_DIR$/src/Shelves.js" />
       </list>
     </option>
   </component>
@@ -268,12 +268,12 @@
       <option name="presentableId" value="Default" />
       <updated>1509047768221</updated>
       <workItem from="1509047769940" duration="14630000" />
-      <workItem from="1509296384762" duration="16157000" />
+      <workItem from="1509296384762" duration="16276000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="30787000" />
+    <option name="totallyTimeSpent" value="30906000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="27" y="23" width="1400" height="873" extended-state="0" />
@@ -503,8 +503,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Shelves.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="19" column="76" lean-forward="false" selection-start-line="19" selection-start-column="46" selection-end-line="19" selection-end-column="76" />
+        <state relative-caret-position="195">
+          <caret line="13" column="80" lean-forward="false" selection-start-line="13" selection-start-column="80" selection-end-line="13" selection-end-column="80" />
           <folding>
             <element signature="e#0#39#0" expanded="true" />
           </folding>
