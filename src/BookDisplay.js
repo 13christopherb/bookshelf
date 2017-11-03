@@ -1,16 +1,10 @@
 import React, {Component} from "react";
 import Book from "./Book.js";
-import Shelves from "./Shelves.js";
-import SearchResults from "./SearchResults.js";
-import "./app.css";
 import * as BooksAPI from "./BooksAPI"
 import _ from "underscore"
 
-class BooksApp extends React.Component {
+class BookDisplay extends React.Component {
     state = {
-        books: [],
-        showSearchResults: false,
-        searchField: ""
     }
 
     /**
@@ -29,30 +23,7 @@ class BooksApp extends React.Component {
         this.setState({books: books});
     }
 
-    showSearch= () => {
-        this.setState({
-            showSearchResults: true
-        })
-    }
-
-    render() {
-
-        if (this.state.showSearchResults) {
-            return (
-                <div className="container-fluid">
-                    <SearchResults searchField={this.state.searchField} />
-                </div>
-            )
-        } else {
-            return (
-                <div className="container-fluid">
-                    <button onClick={this.showSearch}>Search</button>
-                    <Shelves/>
-                </div>
-            )
-        }
-    }
 }
 
 
-export default BooksApp;
+export default BookDisplay;
