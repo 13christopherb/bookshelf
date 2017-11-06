@@ -1,5 +1,5 @@
-import React, {Component} from "react";
-import { Link, Route } from 'react-router-dom';
+import React from "react";
+import { Route } from 'react-router-dom';
 import Book from "./Book.js";
 import Shelves from "./Shelves.js";
 import SearchResults from "./SearchResults.js";
@@ -8,11 +8,15 @@ import * as BooksAPI from "./BooksAPI"
 import _ from "underscore"
 
 class BooksApp extends React.Component {
-    state = {
-        books: [],
-        showSearchResults: false,
-        searchField: ""
+    constructor(props) {
+        super(props);
+        this.state = {
+            books: [],
+            showSearchResults: false,
+            searchField: ""
+        };
     }
+
 
     /**
      * Responsible for changing the shelf of a book when a book's button is pressed
@@ -45,8 +49,8 @@ class BooksApp extends React.Component {
     render() {
             return (
                 <div className="container-fluid">
-                    <Route exact path="/" component={Shelves}/>
-                    <Route exact path="/search" component={SearchResults}/>
+                    <Route exact path="/" component={Shelves} books={this.state.books}/>
+                    <Route exact path="/search" component={SearchResults} books={this.state.books}/>
                 </div>
             )
         }

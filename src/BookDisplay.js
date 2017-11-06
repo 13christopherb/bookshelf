@@ -4,8 +4,6 @@ import * as BooksAPI from "./BooksAPI"
 import _ from "underscore"
 
 class BookDisplay extends React.Component {
-    state = {
-    }
 
     /**
      * Responsible for changing the shelf of a book when a book's button is pressed

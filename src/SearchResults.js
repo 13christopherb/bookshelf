@@ -1,14 +1,36 @@
-import React, {Component} from "react";
+import React from "react";
 import { Link } from 'react-router-dom';
+import { Debounce } from 'react-throttle';
 import Book from "./Book.js";
-import BookDisplay from "./BookDisplay.js"
-import * as BooksAPI from "./BooksAPI"
+import BookDisplay from "./BookDisplay.js";
+import * as BooksAPI from "./BooksAPI";
+import _ from "underscore";
 
 class SearchResults extends BookDisplay {
-    state = {
-        books: [],
-        searchResults: [],
-        searchQuery: ""
+    constructor(props) {
+        super(props);
+        this.state = {
+            books: [],
+            searchResults: [],
+            searchQuery: ""
+        };
+    }
+
+    /**
+     * Fetches the books from the server
+     */
+    componentDidMount() {
+        BooksAPI.getAll().then((bks) => {
+            var books = bks.map((bk) => {
+                return <Book key={bk.id} id={bk.id} title={bk.title} authors={bk.authors}
+                             thumbnail={bk.imageLinks.smallThumbnail}
+                             shelf={bk.shelf} changeShelf={this.changeShelf}/>
+            });
+
+            this.setState({
+                books: books
+            });
+        })
     }
 
     /**
@@ -22,9 +44,17 @@ class SearchResults extends BookDisplay {
                 if (bks.length) {
                     books = bks.map((bk) => {
                         try {
-                            return <Book key={bk.id} id={bk.id} title={bk.title} authors={bk.authors}
-                                         thumbnail={bk.imageLinks.smallThumbnail}
-                                         shelf={bk.shelf} changeShelf={this.changeShelf}/>
+                            //See if the book is already on a shelf
+                            var book = _.find(this.state.books, (book) => {
+                                return bk.id === book.props.id;
+                            });
+                            if (book){
+                                return book;
+                            } else {
+                                return <Book key={bk.id} id={bk.id} title={bk.title} authors={bk.authors}
+                                             thumbnail={bk.imageLinks.smallThumbnail}
+                                             shelf={bk.shelf} changeShelf={this.changeShelf}/>
+                            }
                         }
                         catch(err) {
                         }
@@ -37,7 +67,7 @@ class SearchResults extends BookDisplay {
         }
         else {
             this.setState({
-                books: []
+                searchResults: []
             })
         }
     }
@@ -54,7 +84,9 @@ class SearchResults extends BookDisplay {
                     to="/"
                     className="btn"
                 >Close</Link>
-                <input tyoe="search" className="form-control" onChange={this.search}></input>
+                <Debounce time="400" handler="onChange">
+                    <input tyoe="search" className="form-control" onChange={this.search}></input>
+                </Debounce>
                 <div className="row">
                     <div className="col-md-10">
                         <div className="row card-deck flex-row flex-nowrap">

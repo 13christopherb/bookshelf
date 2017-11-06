@@ -7,12 +7,15 @@ import * as BooksAPI from "./BooksAPI"
 import _ from "underscore"
 
 class BooksApp extends BookDisplay {
-    state = {
-        books: []
+    constructor(props) {
+        super(props);
+        this.state = {
+            books: []
+        };
     }
 
     /**
-     * Searches for books matching the search parameter using BooksAPI
+     * Fetches the books from the server
      */
     componentDidMount() {
         BooksAPI.getAll().then((bks) => {

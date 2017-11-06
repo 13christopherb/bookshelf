@@ -3,8 +3,11 @@ import "font-awesome/css/font-awesome.min.css";
 import _ from "underscore"
 
 class Book extends React.Component {
-    state = {
-        shelf: this.props.shelf
+    constructor(props) {
+        super(props);
+        this.state = {
+            shelf: props.shelf
+        };
     }
 
     /**
