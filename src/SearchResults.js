@@ -2,18 +2,35 @@ import React from "react";
 import { Link } from 'react-router-dom';
 import { Debounce } from 'react-throttle';
 import Book from "./Book.js";
-import BookDisplay from "./BookDisplay.js";
 import * as BooksAPI from "./BooksAPI";
 import _ from "underscore";
 
-class SearchResults extends BookDisplay {
+class SearchResults extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            books: [],
+            bookShelves: new Object(),
             searchResults: [],
             searchQuery: ""
         };
+    }
+
+    /**
+     * Responsible for adding a book to a shelf
+     * @param book The book whose shelf is to be changed
+     * @param shelf The shelf to move the book to
+     */
+    addToShelf = (book, shelf) => {
+        var booksSet = Object.assign(new Set(), this.state.bookShelves);
+        booksSet[shelf].push(<Book key={book.props.id} id={book.props.id}
+                                   title={book.props.title} authors={book.props.authors}
+                                   thumbnail={book.props.thumbnail}
+                                   shelf={shelf} changeShelf={this.addToShelf}/>)
+
+        this.setState({
+            bookShelves: booksSet
+        })
+        BooksAPI.update({id: book.props.id}, shelf);
     }
 
     /**
@@ -24,11 +41,14 @@ class SearchResults extends BookDisplay {
             var books = bks.map((bk) => {
                 return <Book key={bk.id} id={bk.id} title={bk.title} authors={bk.authors}
                              thumbnail={bk.imageLinks.smallThumbnail}
-                             shelf={bk.shelf} changeShelf={this.changeShelf}/>
+                             shelf={bk.shelf} changeShelf={this.addToShelf}/>
+            });
+            var booksSet = _.groupBy(books, (bk) => {
+                return bk.props.shelf;
             });
 
             this.setState({
-                books: books
+                bookShelves: booksSet
             });
         })
     }
@@ -44,17 +64,18 @@ class SearchResults extends BookDisplay {
                 if (bks.length) {
                     books = bks.map((bk) => {
                         try {
-                            //See if the book is already on a shelf
-                            var book = _.find(this.state.books, (book) => {
-                                return bk.id === book.props.id;
-                            });
-                            if (book){
-                                return book;
-                            } else {
-                                return <Book key={bk.id} id={bk.id} title={bk.title} authors={bk.authors}
-                                             thumbnail={bk.imageLinks.smallThumbnail}
-                                             shelf={bk.shelf} changeShelf={this.changeShelf}/>
+                            //See if book is already on a shelf
+                            for (var shelf in this.state.bookShelves) {
+                                var book = _.find(this.state.bookShelves[shelf], (shelfBook) => {
+                                    return shelfBook.props.id === bk.id;
+                                });
+                                if (book) {
+                                    return book;
+                                }
                             }
+                            return <Book key={bk.id} id={bk.id} title={bk.title} authors={bk.authors}
+                                         thumbnail={bk.imageLinks.smallThumbnail}
+                                         shelf={bk.shelf} changeShelf={this.addToShelf}/>
                         }
                         catch(err) {
                         }
@@ -101,6 +122,5 @@ class SearchResults extends BookDisplay {
         )
     }
 }
-
 
 export default SearchResults;

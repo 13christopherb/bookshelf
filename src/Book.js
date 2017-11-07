@@ -5,9 +5,6 @@ import _ from "underscore"
 class Book extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            shelf: props.shelf
-        };
     }
 
     /**
@@ -27,7 +24,7 @@ class Book extends React.Component {
                         {this.props.authors &&
                             <p className="small card-text">{this.props.authors.join(' | ')}</p>
                         }
-                        <select value={this.state.shelf} onChange={this.changeShelf}>
+                        <select value={this.props.shelf} onChange={this.changeShelf}>
                             <option>None</option>
                             <option value="currentlyReading">Currently Reading</option>
                             <option value="wantToRead">Want to Read</option>
