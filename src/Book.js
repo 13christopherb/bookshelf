@@ -3,9 +3,6 @@ import "font-awesome/css/font-awesome.min.css";
 import _ from "underscore"
 
 class Book extends React.Component {
-    constructor(props) {
-        super(props);
-    }
 
     /**
      * Tells the App component to move this book to a different shelf

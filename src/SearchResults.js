@@ -1,19 +1,16 @@
 import React from "react";
-import { Link } from 'react-router-dom';
-import { Debounce } from 'react-throttle';
+import {Link} from 'react-router-dom';
+import {Debounce} from 'react-throttle';
 import Book from "./Book.js";
 import * as BooksAPI from "./BooksAPI";
 import _ from "underscore";
 
 class SearchResults extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            bookShelves: new Object(),
-            searchResults: [],
-            searchQuery: ""
-        };
-    }
+    state = {
+        books: [],
+        searchResults: [],
+        searchQuery: ""
+    };
 
     /**
      * Responsible for adding a book to a shelf
@@ -21,17 +18,18 @@ class SearchResults extends React.Component {
      * @param shelf The shelf to move the book to
      */
     addToShelf = (book, shelf) => {
-        var booksSet = Object.assign(new Set(), this.state.bookShelves);
-        booksSet[shelf].push(<Book key={book.props.id} id={book.props.id}
-                                   title={book.props.title} authors={book.props.authors}
-                                   thumbnail={book.props.thumbnail}
-                                   shelf={shelf} changeShelf={this.addToShelf}/>)
-
+        var searchResults = this.state.searchResults.slice();
+        _.each(searchResults, (bk) => {
+            if (bk.id === book.props.id) {
+                bk.shelf = shelf;
+            }
+        });
         this.setState({
-            bookShelves: booksSet
+            searchResults: searchResults
         })
         BooksAPI.update({id: book.props.id}, shelf);
     }
+
 
     /**
      * Fetches the books from the server
@@ -39,16 +37,17 @@ class SearchResults extends React.Component {
     componentDidMount() {
         BooksAPI.getAll().then((bks) => {
             var books = bks.map((bk) => {
-                return <Book key={bk.id} id={bk.id} title={bk.title} authors={bk.authors}
-                             thumbnail={bk.imageLinks.smallThumbnail}
-                             shelf={bk.shelf} changeShelf={this.addToShelf}/>
-            });
-            var booksSet = _.groupBy(books, (bk) => {
-                return bk.props.shelf;
-            });
+                return {
+                    id: bk.id,
+                    title: bk.title,
+                    authors: bk.authors,
+                    thumbnail: bk.imageLinks.smallThumbnail,
+                    shelf: bk.shelf
+                }
+            })
 
             this.setState({
-                bookShelves: booksSet
+                books: books
             });
         })
     }
@@ -57,7 +56,7 @@ class SearchResults extends React.Component {
      * Searches for books matching the search parameter using BooksAPI
      * @param e The change event for the search field
      */
-    search= (e) => {
+    search = (e) => {
         if (e.target.value.length > 0) {
             BooksAPI.search(e.target.value, 10).then((bks) => {
                 var books = [];
@@ -65,19 +64,21 @@ class SearchResults extends React.Component {
                     books = bks.map((bk) => {
                         try {
                             //See if book is already on a shelf
-                            for (var shelf in this.state.bookShelves) {
-                                var book = _.find(this.state.bookShelves[shelf], (shelfBook) => {
-                                    return shelfBook.props.id === bk.id;
-                                });
-                                if (book) {
-                                    return book;
-                                }
+                            var book = _.find(this.state.books, (book) => {
+                                return book.id === bk.id;
+                            });
+                            if (book) {
+                                return book;
                             }
-                            return <Book key={bk.id} id={bk.id} title={bk.title} authors={bk.authors}
-                                         thumbnail={bk.imageLinks.smallThumbnail}
-                                         shelf={bk.shelf} changeShelf={this.addToShelf}/>
+                            return {
+                                id: bk.id,
+                                title: bk.title,
+                                authors: bk.authors,
+                                thumbnail: bk.imageLinks.smallThumbnail,
+                                shelf: bk.shelf
+                            }
                         }
-                        catch(err) {
+                        catch (err) {
                         }
                     });
                 }
@@ -94,9 +95,15 @@ class SearchResults extends React.Component {
     }
 
     render() {
+        var searchResults = [];
+        _.each(this.state.searchResults, (bk) => {
+            searchResults.push(<Book key={bk.id} id={bk.id} title={bk.title} authors={bk.authors}
+                                     thumbnail={bk.thumbnail}
+                                     shelf={bk.shelf} changeShelf={this.addToShelf}/>)
+        });
         if (this.state.searchResults.length > 0) {
-            var firstShelf = this.state.searchResults.slice(0, 4);
-            var secondShelf = this.state.searchResults.slice(5, 9);
+            var firstShelf = searchResults.slice(0, 4);
+            var secondShelf = searchResults.slice(5, 9);
         }
 
         return (
